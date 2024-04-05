@@ -1,0 +1,32 @@
+---
+title: CMOR Preprint Template
+format:
+  cmor-pdf:
+    keep-tex: true  
+  cmor-html: default
+author:
+  - name: Ross Wilson
+    affiliations:
+      - id: cmor
+        name: University of Otago
+        department: Centre for Musculoskeletal Outcomes Research
+        city: Dunedin
+        country: New Zealand
+        url: https://uo-cmor.github.io
+    orcid: 0000-0001-8505-8081
+    email: ross.wilson@otago.ac.nz
+    url: https://rosswilson-nz.github.io
+  - name: Another author
+    affiliations:
+      - ref: cmor
+abstract: |
+  This document is a template demonstrating the CMOR Preprint format.
+keywords: [template, demo]
+bibliography: bibliography.bib  
+---
+
+## Introduction {#sec-intro}
+
+*TODO* Create a template that demonstrates the appearance, formatting, layout, and functionality of your format. Learn more about journal formats at <https://quarto.org/docs/journals/>.
+
+

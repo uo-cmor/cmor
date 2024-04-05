@@ -1,0 +1,8 @@
+\makeatletter
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{framed}
+\usepackage{float}
+\floatstyle{boxed}
+\@ifundefined{c@chapter}{\newfloat{floatbox}{thp}{lob}}{\newfloat{floatbox}{thp}{lob}[chapter]}
+\floatname{floatbox}{Box}
