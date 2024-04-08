@@ -21,7 +21,11 @@ contributes:
       link-citations: true
       include-in-header:
         - header.tex
+      header-includes: |
+        \usepackage{orcidlink}
       template-partials:
-        - partials/_authors.tex
+        - "partials/before-body.tex"
+        - "partials/title.tex"
+        - "partials/_authors.tex"
       format-resources:
         - cmor.cls
