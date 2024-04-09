@@ -75,9 +75,9 @@
 \DeclareOption{numafflabel}
    {\AtBeginDocument{\def\theaffn{\arabic{affn}}}} %*%
 \DeclareOption{lefttitle}
-   {\AtBeginDocument{\def\elsarticletitlealign{flushleft}}} %*%
+   {\AtBeginDocument{\def\cmortitlealign{flushleft}}} %*%
 \DeclareOption{centertitle}
-   {\AtBeginDocument{\def\elsarticletitlealign{center}}} %*%
+   {\AtBeginDocument{\def\cmortitlealign{center}}} %*%
 \DeclareOption{reversenotenum}
    {\AtBeginDocument{\def\theaffn{\arabic{affn}}
     \def\thefnote{\alph{fnote}}}}
@@ -92,17 +92,17 @@
 \let\tnotesep\@empty
 \let\@title\@empty
 
-\def\useelstitle{}
+\def\usecmortitle{}
 
 \def\title#1{\g@addto@macro\@title{#1%
        \global\let\tnoteref\@gobble}%
-       \g@addto@macro\useelstitle{#1}}
+       \g@addto@macro\usecmortitle{#1}}
 
-\def\elsLabel#1{\@bsphack\protected@write\@auxout{}%
+\def\cmorLabel#1{\@bsphack\protected@write\@auxout{}%
          {\string\Newlabel{#1}{\@currentlabel}}\@esphack}
 \def\Newlabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
 
-\def\elsRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
+\def\cmorRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
 
 \let\@tnotemark\@empty
 
@@ -110,7 +110,7 @@
   \def\tnotemark[#1]{}
 \else
   \def\tnotemark[#1]{\@for\mytmark:=#1\do{%
-        \expandafter\ifcase\elsRef{\mytmark}\or$^{\star}$\or
+        \expandafter\ifcase\cmorRef{\mytmark}\or$^{\star}$\or
        $^{,\star\star}$\fi
     }%
 }
@@ -120,7 +120,7 @@
 \let\@tnotes\@empty
 \newcounter{tnote}
 \def\tnotetext[#1]#2{\g@addto@macro\@tnotes{%
-  \stepcounter{tnote}\elsLabel{#1}%
+  \stepcounter{tnote}\cmorLabel{#1}%
     \def\thefootnote{\ifcase\c@tnote\or$\star$\or$\star\star$\fi}%
     \footnotetext{#2}}}
 
@@ -132,7 +132,7 @@
 \def\thefnote{\arabic{fnote}}
 \def\fnmark[#1]{\let\comma\@empty
     \def\@fnmark{\@for\@@fnmark:=#1\do{%
-    \edef\fnotenum{\@ifundefined{X@\@@fnmark}{1}{\elsRef{\@@fnmark}}}%
+    \edef\fnotenum{\@ifundefined{X@\@@fnmark}{1}{\cmorRef{\@@fnmark}}}%
   \unskip\comma\fnotenum\let\comma,}}%
 }
 
@@ -140,12 +140,12 @@
 
 \let\@fnotes\@empty\let\@fnmark\@empty
 \def\fntext[#1]#2{\g@addto@macro\@fnotes{%
-   \refstepcounter{fnote}\elsLabel{#1}%
+   \refstepcounter{fnote}\cmorLabel{#1}%
    \def\thefootnote{\c@fnote}%
    \global\setcounter{footnote}{\c@fnote}%
    \footnotetext{#2}}}
 
-\def\cormark[#1]{\edef\cnotenum{\elsRef{#1}}%
+\def\cormark[#1]{\edef\cnotenum{\cmorRef{#1}}%
     \unskip\textsuperscript{\sep\ifcase\cnotenum\or
        $\ast$\or$\ast\ast$\fi\hspace{-1pt}}\let\sep=,}
 
@@ -153,13 +153,13 @@
 \let\@cornotes\@empty
 \newcounter{cnote}
 \def\cortext[#1]#2{\g@addto@macro\@cornotes{%
-    \refstepcounter{cnote}\elsLabel{#1}%
+    \refstepcounter{cnote}\cmorLabel{#1}%
     \def\thefootnote{\ifcase\thecnote\or$\ast$\or
     $\ast\ast$\fi}%
     \footnotetext{#2}}}
 
 \let\@corref\@empty
-\def\corref#1{\edef\cnotenum{\elsRef{#1}}%
+\def\corref#1{\edef\cnotenum{\cmorRef{#1}}%
     \edef\@corref{\ifcase\cnotenum\or
          $\ast$\or$\ast\ast$\fi\hskip-1pt}}
 
@@ -167,8 +167,8 @@
    \c@fnote=0 \c@tnote=0 \c@footnote=0}
 
 \let\eadsep\@empty
-\def\@elseads{}
-\let\@elsuads\@empty
+\def\@cmoreads{}
+\let\@cmoruads\@empty
 \let\@cormark\@empty
 \def\hashchar{\expandafter\@gobble\string\~}
 \def\underscorechar{\expandafter\@gobble\string\_}
@@ -188,7 +188,7 @@
 }
 \newcounter{ead}
 \gdef\emailauthor#1#2{\stepcounter{ead}%
-     \g@addto@macro\@elseads{\raggedright%
+     \g@addto@macro\@cmoreads{\raggedright%
       \let\corref\@gobble\def\@@tmp{#1}%
       \eadsep{\ttfamily\expandafter\strip@prefix\meaning\@@tmp}
       (#2)\def\eadsep{\unskip,\space}}%
@@ -203,15 +203,15 @@
      {#2}{\expandafter\strip@prefix\meaning\tmp}}%
   \egroup
 }
-\gdef\urlauthor#1#2{\g@addto@macro\@elsuads{\let\corref\@gobble%
+\gdef\urlauthor#1#2{\g@addto@macro\@cmoruads{\let\corref\@gobble%
      \def\@@tmp{#1}\raggedright\eadsep
      {\ttfamily\expandafter\strip@prefix\meaning\@@tmp}\space(#2)%
      \def\eadsep{\unskip,\space}}%
 }
 
-\def\elsauthors{}
+\def\cmorauthors{}
 \def\useauthors{}
-\def\elsprelimauthors{}
+\def\cmorprelimauthors{}
 
 \def\pprinttitle{}
 \let\authorsep\@empty
@@ -222,14 +222,14 @@
 
 \newtoks\@eadauthor
 \def\@@author[#1]#2{%
-    \g@addto@macro\elsprelimauthors{%
+    \g@addto@macro\cmorprelimauthors{%
      \prelimauthorsep#2%
      \def\prelimauthorsep{\unskip,\space}}%
-    \g@addto@macro\elsauthors{%
+    \g@addto@macro\cmorauthors{%
     \def\baselinestretch{1}%
     \authorsep#2\unskip\textsuperscript{%#1%
       \@for\@@affmark:=#1\do{%
-       \edef\affnum{\@ifundefined{X@\@@affmark}{1}{\elsRef{\@@affmark}}}%
+       \edef\affnum{\@ifundefined{X@\@@affmark}{1}{\cmorRef{\@@affmark}}}%
      \unskip\sep\affnum\let\sep=,}%
       \ifx\@fnmark\@empty\else\unskip\sep\@fnmark\let\sep=,\fi
       \ifx\@corref\@empty\else\unskip\sep\@corref\let\sep=,\fi
@@ -242,10 +242,10 @@
 }
 
 \def\@author#1{%
-    \g@addto@macro\elsprelimauthors{%
+    \g@addto@macro\cmorprelimauthors{%
      \prelimauthorsep#1%
      \def\prelimauthorsep{\unskip,\space}}%
-    \g@addto@macro\elsauthors{\normalsize%
+    \g@addto@macro\cmorauthors{\normalsize%
     \def\baselinestretch{1}%
     \upshape\authorsep#1\unskip\textsuperscript{%
       \ifx\@fnmark\@empty\else\unskip\sep\@fnmark\let\sep=,\fi
@@ -260,12 +260,12 @@
 
 \AtBeginDocument{%
   \@ifpackageloaded{hyperref}{%
-    \expandafter\gdef\csname Hy@title\endcsname{\useelstitle}%
+    \expandafter\gdef\csname Hy@title\endcsname{\usecmortitle}%
     \expandafter\gdef\csname Hy@author\endcsname{\useauthors}%
    }{}
 }
 
-\def\elsaddress{}
+\def\cmoraddress{}
 \def\addsep{\par\vskip6pt}
 
 \def\@alph#1{%
@@ -422,15 +422,15 @@
       {
        \keys_set:nn { stm / affiliation } { #2 }
       }
-     \csgappto{elsaddress}{
+     \csgappto{cmoraddress}{
       \def\baselinestretch{1}%
       \refstepcounter{affn}
       \xdef\@currentlabel{\theaffn}
       \IfNoValueTF { #1 }
         { }
-        { \elsLabel{#1} }
+        { \cmorLabel{#1} }
       \textsuperscript{\theaffn}}
-      \csxappto{elsaddress}{
+      \csxappto{cmoraddress}{
         \csuse { ca_affiliation_values }
         \par
       }
@@ -591,76 +591,76 @@
   \long\def\@@affiliation[#1]#2{%
       \@resetaffiliation%
       \gdef\caaffiliationvalues{}%
-      \elsLabel{#1}%
+      \cmorLabel{#1}%
       \setkeys{affiliation}{#2}%
-      \g@addto@macro\elsaddress{%
+      \g@addto@macro\cmoraddress{%
       \def\baselinestretch{1}%
       \refstepcounter{affn}%
       \xdef\@currentlabel{\theaffn}%
-      \elsLabel{#1}%
+      \cmorLabel{#1}%
       \textsuperscript{\theaffn}}
-      \xstmappto\elsaddress{\caaffiliationvalues\par}}
+      \xstmappto\cmoraddress{\caaffiliationvalues\par}}
 
   \long\def\@affiliation#1{%
       \@resetaffiliation%
       \gdef\caaffiliationvalues{}%
       \setkeys{affiliation}{#1}%
-      \g@addto@macro\elsauthors{%
+      \g@addto@macro\cmorauthors{%
       \def\baselinestretch{1}}%
-      \xstmappto\elsaddress{\caaffiliationvalues\par}}
+      \xstmappto\cmoraddress{\caaffiliationvalues\par}}
 \fi
 
 \def\address{\@ifnextchar[{\@@address}{\@address}}
 
-\long\def\@@address[#1]#2{\g@addto@macro\elsaddress{%
+\long\def\@@address[#1]#2{\g@addto@macro\cmoraddress{%
     \def\baselinestretch{1}%
      \refstepcounter{affn}
      \xdef\@currentlabel{\theaffn}
-     \elsLabel{#1}%
+     \cmorLabel{#1}%
     \textsuperscript{\theaffn}#2\par}}
 
-\long\def\@address#1{\g@addto@macro\elsauthors{%
+\long\def\@address#1{\g@addto@macro\cmorauthors{%
     \def\baselinestretch{1}%
     \addsep\footnotesize\itshape#1\def\addsep{\par\vskip6pt}%
     \def\authorsep{\par\vskip8pt}}}
 
 \newbox\absbox
-\let\@elsarticleabstitle\@empty %*%
-\def\abstracttitle#1{\gdef\@elsarticleabstitle{#1}} %*%
+\let\@cmorabstitle\@empty %*%
+\def\abstracttitle#1{\gdef\@cmorabstitle{#1}} %*%
 \abstracttitle{Abstract} %*%
 \renewenvironment{abstract}{\global\setbox\absbox=\vbox\bgroup
   \hsize=\textwidth\def\baselinestretch{1}%
-  \noindent\unskip\textbf{\@elsarticleabstitle} %*%
+  \noindent\unskip\textbf{\@cmorabstitle} %*%
  \par\medskip\noindent\unskip\ignorespaces}
  {\egroup}
 
-\newbox\elsarticlehighlightsbox
-\newbox\elsarticlegrabsbox
-\def\@elsarticlehighlightstitle{Highlights}
-\def\@elsarticlegrabstitle{Graphical Abstract}
-\newif\ifelsprelimpagegrabs\global\elsprelimpagegrabsfalse
-\newif\ifelsprelimpagehl\global\elsprelimpagehlfalse
-\def\elsarticleprelims{%
- \ifelsprelimpagegrabs\relax%
+\newbox\cmorhighlightsbox
+\newbox\cmorgrabsbox
+\def\@cmorhighlightstitle{Highlights}
+\def\@cmorgrabstitle{Graphical Abstract}
+\newif\ifcmorprelimpagegrabs\global\cmorprelimpagegrabsfalse
+\newif\ifcmorprelimpagehl\global\cmorprelimpagehlfalse
+\def\cmorprelims{%
+ \ifcmorprelimpagegrabs\relax%
    \thispagestyle{empty}%
-   \unvbox\elsarticlegrabsbox%
+   \unvbox\cmorgrabsbox%
    \pagebreak\clearpage%
  \fi%
- \ifelsprelimpagehl\relax%
+ \ifcmorprelimpagehl\relax%
    \thispagestyle{empty}
-   \unvbox\elsarticlehighlightsbox%
+   \unvbox\cmorhighlightsbox%
    \pagebreak\clearpage%
    \setcounter{page}{1}%
  \fi%
 }
 \newenvironment{highlights}{%
-  \global\elsprelimpagehltrue%
-  \global\setbox\elsarticlehighlightsbox=\vbox\bgroup
+  \global\cmorprelimpagehltrue%
+  \global\setbox\cmorhighlightsbox=\vbox\bgroup
   \hsize=\textwidth\def\baselinestretch{1}%
-  \noindent\unskip{\Large\@elsarticlehighlightstitle}%*%
+  \noindent\unskip{\Large\@cmorhighlightstitle}%*%
   \par\vskip12pt\noindent\unskip\ignorespaces\textbf{\@title}%
-  \ifx\elsprelimauthors\@empty\relax\else%
-    \par\vskip6pt\noindent\unskip\ignorespaces\elsprelimauthors%
+  \ifx\cmorprelimauthors\@empty\relax\else%
+    \par\vskip6pt\noindent\unskip\ignorespaces\cmorprelimauthors%
   \fi%
   \par\medskip\noindent\unskip\ignorespaces
  \begin{itemize}
@@ -668,21 +668,21 @@
  {\end{itemize}
   \egroup}
 \newenvironment{graphicalabstract}{%
-  \global\elsprelimpagegrabstrue%
-  \global\setbox\elsarticlegrabsbox=\vbox\bgroup
+  \global\cmorprelimpagegrabstrue%
+  \global\setbox\cmorgrabsbox=\vbox\bgroup
   \hsize=\textwidth\def\baselinestretch{1}%
-  \noindent\unskip{\Large\@elsarticlegrabstitle}%*%
+  \noindent\unskip{\Large\@cmorgrabstitle}%*%
   \par\vskip12pt\noindent\unskip\ignorespaces\textbf{\@title}%
-  \ifx\elsprelimauthors\@empty\relax\else%
-    \par\vskip6pt\noindent\unskip\ignorespaces\elsprelimauthors%
+  \ifx\cmorprelimauthors\@empty\relax\else%
+    \par\vskip6pt\noindent\unskip\ignorespaces\cmorprelimauthors%
   \fi%
  \par\medskip\noindent\unskip\ignorespaces}
  {\egroup}
 
 \newbox\keybox
-\let\@elsarticlekwdtitle\@empty %*%
-\def\keywordtitle#1{\gdef\@elsarticlekwdtitle{#1}} %*%
-\def\keywordtitlesep#1{\gdef\@elsarticlekeywordtitlesep{#1}} %*%
+\let\@cmorkwdtitle\@empty %*%
+\def\keywordtitle#1{\gdef\@cmorkwdtitle{#1}} %*%
+\def\keywordtitlesep#1{\gdef\@cmorkeywordtitlesep{#1}} %*%
 \keywordtitle{Keywords} %*%
 \keywordtitlesep{:\ }
 \def\keyword{%
@@ -694,7 +694,7 @@
   \global\setbox\keybox=\vbox\bgroup\hsize=\textwidth
   \normalsize\normalfont\def\baselinestretch{1}
   \parskip\z@
-  \noindent\textit{\@elsarticlekwdtitle\@elsarticlekeywordtitlesep}
+  \noindent\textit{\@cmorkwdtitle\@cmorkeywordtitlesep}
   \raggedright                         % Keywords are not justified.
   \ignorespaces}
 \def\endkeyword{\par \egroup}
@@ -711,16 +711,16 @@
   \ifx\@tnotes\@empty\else\@tnotes\fi
   \ifx\@nonumnotes\@empty\else\@nonumnotes\fi
   \ifx\@cornotes\@empty\else\@cornotes\fi
-  \ifx\@elseads\@empty\relax\else
+  \ifx\@cmoreads\@empty\relax\else
    \let\thefootnote\relax
    \footnotetext{\ifnum\theead=1\relax
       \textit{Email address:\space}\else
       \textit{Email addresses:\space}\fi
-     \@elseads}\fi
-  \ifx\@elsuads\@empty\relax\else
+     \@cmoreads}\fi
+  \ifx\@cmoruads\@empty\relax\else
    \let\thefootnote\relax
    \footnotetext{\textit{URL:\space}%
-     \@elsuads}\fi
+     \@cmoruads}\fi
 \fi
   \ifx\@fnotes\@empty\else\@fnotes\fi
   \iflongmktitle\if@twocolumn
@@ -732,37 +732,37 @@
 \def\newpage@after@author{author}
 \def\newpage@after@abstract{abstract}
 \def\newpageafter#1%
-    {\gdef\@elsarticlenewpageafter{#1}}
+    {\gdef\@cmornewpageafter{#1}}
 
 \long\def\pprintMaketitle{\clearpage
   \iflongmktitle\if@twocolumn\let\columnwidth=\textwidth\fi\fi
   \resetTitleCounters
   \def\baselinestretch{1}%
   \printFirstPageNotes
-  \begin{\elsarticletitlealign}%
+  \begin{\cmortitlealign}%
  \thispagestyle{pprintTitle}%
    \def\baselinestretch{1}%
     \Large\@title\par\vskip18pt%
-    \ifx\@elsarticlenewpageafter\newpage@after@title% %*%
+    \ifx\@cmornewpageafter\newpage@after@title% %*%
       \newpage
     \fi%
     \ifdoubleblind
       \vspace*{2pc}
     \else
-      \normalsize\elsauthors\par\vskip10pt
-      \footnotesize\itshape\elsaddress\par\vskip36pt
+      \normalsize\cmorauthors\par\vskip10pt
+      \footnotesize\itshape\cmoraddress\par\vskip36pt
     \fi
-    \ifx\@elsarticlenewpageafter\newpage@after@author% %*%
+    \ifx\@cmornewpageafter\newpage@after@author% %*%
       \newpage
     \fi%
     \hrule\vskip12pt
     \ifvoid\absbox\else\unvbox\absbox\par\vskip10pt\fi
     \ifvoid\keybox\else\unvbox\keybox\par\vskip10pt\fi
     \hrule\vskip12pt
-    \ifx\@elsarticlenewpageafter\newpage@after@abstract% %*%
+    \ifx\@cmornewpageafter\newpage@after@abstract% %*%
       \newpage
     \fi%
-    \end{\elsarticletitlealign}%
+    \end{\cmortitlealign}%
     \gdef\thefootnote{\arabic{footnote}}%
   }
 
@@ -786,20 +786,20 @@
 \long\def\MaketitleBox{%
   \resetTitleCounters
   \def\baselinestretch{1}%
-  \begin{\elsarticletitlealign}%
+  \begin{\cmortitlealign}%
    \def\baselinestretch{1}%
     \Large\@title\par\vskip18pt
   \ifdoubleblind
     \vspace*{2pc}
   \else
-    \normalsize\elsauthors\par\vskip10pt
-    \footnotesize\itshape\elsaddress\par\vskip36pt
+    \normalsize\cmorauthors\par\vskip10pt
+    \footnotesize\itshape\cmoraddress\par\vskip36pt
   \fi
     \hrule\vskip12pt
     \ifvoid\absbox\else\unvbox\absbox\par\vskip10pt\fi
     \ifvoid\keybox\else\unvbox\keybox\par\vskip10pt\fi
     \hrule\vskip12pt
-    \end{\elsarticletitlealign}%
+    \end{\cmortitlealign}%
 }
 
 \def\FNtext#1{\par\bgroup\footnotesize#1\egroup}
@@ -858,27 +858,27 @@
 
   \skip\footins=24pt
 
-\newbox\els@boxa
-\newbox\els@boxb
+\newbox\cmor@boxa
+\newbox\cmor@boxb
 
 \ifpreprint
-  \def\maketitle{\elsarticleprelims\pprintMaketitle}
+  \def\maketitle{\cmorprelims\pprintMaketitle}
   \else
    \ifnum\jtype=1
     \def\maketitle{%
-      \elsarticleprelims%
+      \cmorprelims%
       \iflongmktitle\getSpaceLeft
         \ifdim\noteheight>0pt%
     \advance\@tempdima-1.35\baselineskip
         \fi%
-       \global\setbox\els@boxa=\vsplit0 to \@tempdima
-       \box\els@boxa\par\resetTitleCounters
+       \global\setbox\cmor@boxa=\vsplit0 to \@tempdima
+       \box\cmor@boxa\par\resetTitleCounters
        \thispagestyle{pprintTitle}%
        \printFirstPageNotes
        \ifnum\savetitlepagespan>1\relax%
        \myfor{2}{\savetitlepagespan}{%
-       \global\setbox\els@boxb=\vsplit0 to \textheight%\@tempdima
-       \box\els@boxb}
+       \global\setbox\cmor@boxb=\vsplit0 to \textheight%\@tempdima
+       \box\cmor@boxb}
        \else%
        \fi%
        \box0%
@@ -889,19 +889,19 @@
   \else
  \ifnum\jtype=5
     \def\maketitle{%
-      \elsarticleprelims%
+      \cmorprelims%
       \iflongmktitle\getSpaceLeft
         \ifdim\noteheight>0pt%
     \advance\@tempdima-1.35\baselineskip
         \fi%
-       \global\setbox\els@boxa=\vsplit0 to \@tempdima
-       \box\els@boxa\par\resetTitleCounters
+       \global\setbox\cmor@boxa=\vsplit0 to \@tempdima
+       \box\cmor@boxa\par\resetTitleCounters
        \thispagestyle{pprintTitle}%
        \printFirstPageNotes
        \ifnum\savetitlepagespan>1\relax%
        \myfor{2}{\savetitlepagespan}{%
-       \global\setbox\els@boxb=\vsplit0 to \textheight%\@tempdima
-       \twocolumn[\box\els@boxb]}
+       \global\setbox\cmor@boxb=\vsplit0 to \textheight%\@tempdima
+       \twocolumn[\box\cmor@boxb]}
        \else%
        \fi%
        \twocolumn[\box0]%\printFirstPageNotes
@@ -912,19 +912,19 @@
   \else
   \if@twocolumn
     \def\maketitle{%
-        \elsarticleprelims%
+        \cmorprelims%
         \iflongmktitle\getSpaceLeft
           \ifdim\noteheight>0pt%
     \advance\@tempdima-1.35\baselineskip
         \fi%
-       \global\setbox\els@boxa=\vsplit0 to \@tempdima
-       \box\els@boxa\par\resetTitleCounters
+       \global\setbox\cmor@boxa=\vsplit0 to \@tempdima
+       \box\cmor@boxa\par\resetTitleCounters
        \thispagestyle{pprintTitle}%
        \printFirstPageNotes
        \ifnum\savetitlepagespan>1\relax%
        \myfor{2}{\savetitlepagespan}{%
-       \global\setbox\els@boxb=\vsplit0 to \textheight%\@tempdima
-       \twocolumn[\box\els@boxb]}
+       \global\setbox\cmor@boxb=\vsplit0 to \textheight%\@tempdima
+       \twocolumn[\box\cmor@boxb]}
        \else%
        \fi%
        \twocolumn[\box0]%
@@ -934,24 +934,24 @@
      \gdef\thefootnote{\arabic{footnote}}}%
    \else
     \def\maketitle{%
-      \elsarticleprelims%
+      \cmorprelims%
       \iflongmktitle\getSpaceLeft
         \ifdim\noteheight>0pt%
     \advance\@tempdima-1.35\baselineskip
         \fi%
-       \global\setbox\els@boxa=\vsplit0 to \@tempdima
-       \box\els@boxa\par\resetTitleCounters
+       \global\setbox\cmor@boxa=\vsplit0 to \@tempdima
+       \box\cmor@boxa\par\resetTitleCounters
        \thispagestyle{pprintTitle}%
        \printFirstPageNotes
        \ifnum\savetitlepagespan>1\relax%
        \myfor{2}{\savetitlepagespan}{%
-       \global\setbox\els@boxb=\vsplit0 to \textheight%\@tempdima
-       \box\els@boxb}
+       \global\setbox\cmor@boxb=\vsplit0 to \textheight%\@tempdima
+       \box\cmor@boxb}
        \else%
        \fi%
        \box0%
      \else
-       \elsarticleprelims%
+       \cmorprelims%
        \finalMaketitle\printFirstPageNotes
       \fi
     \gdef\thefootnote{\arabic{footnote}}}%
@@ -960,15 +960,15 @@
  \fi
 \fi
 
-\let\@elsarticlemyfooter\@empty
-\let\@elsarticlemyfooteralign\@empty
-\def\@elsarticlemyfooteralignleft{L}
-\def\@elsarticlemyfooteralignright{R}
-\def\@elsarticlemyfooteraligncenter{C}
+\let\@cmormyfooter\@empty
+\let\@cmormyfooteralign\@empty
+\def\@cmormyfooteralignleft{L}
+\def\@cmormyfooteralignright{R}
+\def\@cmormyfooteraligncenter{C}
 
 \def\myfooter[#1]#2 %*%
-      {\gdef\@elsarticlemyfooteralign{#1}
-       \gdef\@elsarticlemyfooter{#2}}
+      {\gdef\@cmormyfooteralign{#1}
+       \gdef\@cmormyfooter{#2}}
 
 \def\myfooterfont#1{\gdef\@myfooterfont{#1}}
 \myfooterfont{\footnotesize\itshape}
@@ -979,14 +979,14 @@
        {\hbox to \textwidth%
         {\ifnopreprintline\relax\else
         \@myfooterfont%
-         \ifx\@elsarticlemyfooteralign\@elsarticlemyfooteraligncenter%
-           \hfil\@elsarticlemyfooter\hfil%
+         \ifx\@cmormyfooteralign\@cmormyfooteraligncenter%
+           \hfil\@cmormyfooter\hfil%
          \else%
-         \ifx\@elsarticlemyfooteralign\@elsarticlemyfooteralignleft%
-           \@elsarticlemyfooter\hfill{}%
+         \ifx\@cmormyfooteralign\@cmormyfooteralignleft%
+           \@cmormyfooter\hfill{}%
          \else%
-         \ifx\@elsarticlemyfooteralign\@elsarticlemyfooteralignright%
-           {}\hfill\@elsarticlemyfooter%
+         \ifx\@cmormyfooteralign\@cmormyfooteralignright%
+           {}\hfill\@cmormyfooter%
          \else%
                Preprint submitted to \ifx\@journal\@empty%
                  Elsevier%
@@ -1013,11 +1013,11 @@
            {\p@}%
            {\normalfont\normalsize\itshape}}
 
-\def\paragraph{\secdef{\els@aparagraph}{\els@bparagraph}}
-\def\els@aparagraph[#1]#2{\elsparagraph[#1]{#2.}}
-\def\els@bparagraph#1{\elsparagraph*{#1.}}
+\def\paragraph{\secdef{\cmor@aparagraph}{\cmor@bparagraph}}
+\def\cmor@aparagraph[#1]#2{\cmorparagraph[#1]{#2.}}
+\def\cmor@bparagraph#1{\cmorparagraph*{#1.}}
 
-\newcommand\elsparagraph{\@startsection{paragraph}{4}{0\z@}%
+\newcommand\cmorparagraph{\@startsection{paragraph}{4}{0\z@}%
            {10\p@ \@plus 6\p@ \@minus 3\p@}%
            {-6\p@}%
            {\normalfont\itshape}}

@@ -19,6 +19,8 @@ contributes:
       documentclass: cmor
       colorlinks: true
       link-citations: true
+      cite-method: citeproc
+      csl: bib/cmor-vancouver.csl
       include-in-header:
         - header.tex
       header-includes: |
@@ -27,5 +29,6 @@ contributes:
         - "partials/before-body.tex"
         - "partials/title.tex"
         - "partials/_authors.tex"
+        - "header.tex"
       format-resources:
         - cmor.cls

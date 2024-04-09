@@ -1,24 +1,6 @@
 %%
-%% This is file `elsarticle-num.bst' (Version 2.1),
+%% This is file `cmor-num.bst`, adapted from `elsarticle-num.bst' (Version 2.1),
 %% 
-%% Copyright 2007-2020 Elsevier Ltd
-%% 
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%% 
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%% 
-%% 
-%% $Id: elsarticle-num.bst 194 2020-11-23 11:29:27Z rishi $
-%% 
-%% $URL: https://lenova.river-valley.com/svn/elsarticle/trunk/elsarticle-num.bst $
-%%
-%% ----------------------------------------
 
 ENTRY
   { address
@@ -1504,4 +1486,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 %% End of customized bst file
 %%
-%% End of file `elsarticle-num.bst'.
+%% End of file `cmor-num.bst'.
