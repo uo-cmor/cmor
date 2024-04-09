@@ -6,7 +6,7 @@
  \def\RCSdate{2024/04/05}%
  \def\@shortjnl{\relax}
  \def\@journal{CMOR}
- \def\@company{CMOR}
+ \def\@company{University of Otago}
  \def\@issn{000-0000}
  \def\@shortjid{cmor}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
@@ -191,7 +191,7 @@
      \g@addto@macro\@cmoreads{\raggedright%
       \let\corref\@gobble\def\@@tmp{#1}%
       \eadsep{\ttfamily\expandafter\strip@prefix\meaning\@@tmp}
-      (#2)\def\eadsep{\unskip,\space}}%
+      \def\eadsep{\unskip,\space}}%
 }
 \gdef\@uad[#1]#2{\bgroup
    \def~{\hashchar}%
@@ -628,10 +628,9 @@
 \let\@cmorabstitle\@empty %*%
 \def\abstracttitle#1{\gdef\@cmorabstitle{#1}} %*%
 \abstracttitle{Abstract} %*%
-\renewenvironment{abstract}{\global\setbox\absbox=\vbox\bgroup
+\renewenvironment{abstract}{\small\setlength{\parindent}{0cm}\global\setbox\absbox=\vbox\bgroup
   \hsize=\textwidth\def\baselinestretch{1}%
-  \noindent\unskip\textbf{\@cmorabstitle} %*%
- \par\medskip\noindent\unskip\ignorespaces}
+  \unskip\ignorespaces}
  {\egroup}
 
 \newbox\cmorhighlightsbox
@@ -684,7 +683,7 @@
 \def\keywordtitle#1{\gdef\@cmorkwdtitle{#1}} %*%
 \def\keywordtitlesep#1{\gdef\@cmorkeywordtitlesep{#1}} %*%
 \keywordtitle{Keywords} %*%
-\keywordtitlesep{:\ }
+\keywordtitlesep{\ }
 \def\keyword{%
   \def\sep{\unskip, }%
  \def\MSC{\@ifnextchar[{\@MSC}{\@MSC[2000]}}
@@ -692,9 +691,9 @@
   \def\PACS{\par\leavevmode\hbox {\it PACS:\space}}%
   \def\JEL{\par\leavevmode\hbox {\it JEL:\space}}%
   \global\setbox\keybox=\vbox\bgroup\hsize=\textwidth
-  \normalsize\normalfont\def\baselinestretch{1}
+  \small\normalfont\def\baselinestretch{1}
   \parskip\z@
-  \noindent\textit{\@cmorkwdtitle\@cmorkeywordtitlesep}
+  \noindent\textbf{\@cmorkwdtitle\@cmorkeywordtitlesep}
   \raggedright                         % Keywords are not justified.
   \ignorespaces}
 \def\endkeyword{\par \egroup}
